@@ -55,7 +55,7 @@ void printHex(const string& label, const vector<uint8_t>& data) {
 
 
 int main() {
-    ifstream file("/home/hamza/Desktop/HTB/Crackmes/flag.enc",ios::binary);
+    ifstream file("flag.enc",ios::binary);
     vector<uint8_t> file_data((istreambuf_iterator<char>(file)),istreambuf_iterator<char>());
     file.close();
 
