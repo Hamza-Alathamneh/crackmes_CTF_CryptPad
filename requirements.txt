@@ -1,0 +1,5 @@
+# No external Python dependencies required.
+# The decrypt_flag.py script uses only Python standard library modules:
+#   - sys
+#   - struct
+#   - os

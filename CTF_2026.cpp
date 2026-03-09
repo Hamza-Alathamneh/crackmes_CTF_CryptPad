@@ -55,7 +55,7 @@ void printHex(const string& label, const vector<uint8_t>& data) {
 
 
 int main() {
-    ifstream file("/home/hamza/Desktop/HTB/Crackmes/flag.enc",ios::binary);
+    ifstream file("flag.enc",ios::binary);
     vector<uint8_t> file_data((istreambuf_iterator<char>(file)),istreambuf_iterator<char>());
     file.close();
 
@@ -72,14 +72,14 @@ int main() {
     vector<uint8_t> ciphertext(file_data.begin(),file_data.begin()+footer_start);
 
 
-    for (int i=0;i<ciphertext.size();++i) {
+    for (size_t i=0;i<ciphertext.size();++i) {
         ciphertext[i] ^= key[i%8];
     }
 
     RC4 rc4(key);
     vector<uint8_t>rc4_output=rc4.process(ciphertext);
 
-    for (int i = 0; i < rc4_output.size(); ++i) {
+    for (size_t i = 0; i < rc4_output.size(); ++i) {
         rc4_output[i] ^= key[i % 8];
     }
 

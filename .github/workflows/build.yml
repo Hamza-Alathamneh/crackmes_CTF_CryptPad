@@ -1,0 +1,60 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ "main", "copilot/**" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # -------------------------------------------------------------------------
+  # Ubuntu build
+  # -------------------------------------------------------------------------
+  build-ubuntu:
+    name: Build on Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile solver (CTF_2026.cpp)
+        run: g++ -std=c++17 -O2 -Wall -Wextra -o solver CTF_2026.cpp
+
+      - name: Compile encryption tool (encrypt_flag.cpp)
+        run: g++ -std=c++17 -O2 -Wall -Wextra -o encrypt encrypt_flag.cpp
+
+      - name: Run Python validation tests
+        run: python3 test/validate.py
+
+      - name: Decrypt flag.enc with C++ solver
+        run: ./solver
+
+      - name: Decrypt flag.enc with Python solver
+        run: python3 decrypt_flag.py
+
+  # -------------------------------------------------------------------------
+  # Windows build
+  # -------------------------------------------------------------------------
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile solver (CTF_2026.cpp)
+        run: g++ -std=c++17 -O2 -Wall -Wextra -o solver.exe CTF_2026.cpp
+
+      - name: Compile encryption tool (encrypt_flag.cpp)
+        run: g++ -std=c++17 -O2 -Wall -Wextra -o encrypt.exe encrypt_flag.cpp
+
+      - name: Run Python validation tests
+        run: python test/validate.py
+
+      - name: Decrypt flag.enc with C++ solver
+        run: .\solver.exe
+
+      - name: Decrypt flag.enc with Python solver
+        run: python decrypt_flag.py
